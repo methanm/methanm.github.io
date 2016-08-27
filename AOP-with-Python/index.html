@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" /><title>AOP with Python</title>
+        <meta name="author" content="Ethan">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta property="og:site_name" content="">
+        <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" />-->
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/css/style.css" type="text/css">
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/css/pygments.css" type="text/css">
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/fancybox/jquery.fancybox.css" type="text/css">
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/scrollLoading/style.css" type="text/css">
+
+        <link href='//fonts.googleapis.com/css?family=Titillium+Web:300,400,600' rel='stylesheet' type='text/css'>
+        <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" href="http://www.ccil.org/~ethanm/blog/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="http://www.ccil.org/~ethanm/blog/favicon.ico" type="image/x-icon">
+        <link rel="apple-apple-touch-icon" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-iphone-60x60.png">
+        <link rel="apple-apple-touch-icon" sizes="60x60" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-ipad-76x76.png">
+        <link rel="apple-apple-touch-icon" sizes="114x114" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-iphone-retina-120x120.png">
+        <link rel="apple-apple-touch-icon" sizes="144x144" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-ipad-retina-152x152.png">
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+<div id="header-outer" class="outer">
+    <div class="container">
+        <div class="container-inner">
+            <div id="header-title">
+                <h1 class="logo-wrap">
+                    <a href="http://www.ccil.org/~ethanm/blog/" class="logo">Ethan</a>
+                </h1>
+
+                <h2 class="subtitle-wrap">
+                    <p class="subtitle">I write what I think</p>
+                </h2>
+
+            </div>
+            <div id="header-inner" class="nav-container">
+                <a id="main-nav-toggle" class="nav-icon"></a>
+                <div class="nav-container-inner">
+                    <ul id="main-nav">
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="http://www.ccil.org/~ethanm/blog/">Home</a></li>
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="http://www.ccil.org/~ethanm/blog/archives">Archives</a></li>
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="http://www.ccil.org/~ethanm/blog/about">About</a></li>
+                    </ul>
+                    <nav id="sub-nav">
+                    <div id="search-form-wrap">
+                        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:http://www.ccil.org/~ethanm/bloghttp://www.ccil.org/~ethanm/blog/"></form>
+                    </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+                            <h1 class="header">Article</h1>
+                        </div>
+                        <div class="main-body-content">
+                            
+
+
+
+
+
+
+<article class="article article-single article-type-article" itemscope="" itemprop="blogarticle">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">AOP with Python</h1>
+        </header>
+
+        <p class="article-byline">
+            <a href="http://www.ccil.org/~ethanm/blog/AOP-with-Python/" class="article-date">
+                <time datetime="2016-01-28T19:57:00.000Z" itemprop="datePublished">2016-01-28</time>
+            </a>
+        </p>
+        <div class="article-entry" itemprop="articleBody"><p>A lot of my work these days revolves around writing system tests using
+IronPython: our principal SDK is written in C/C++, but we have a thin
+.NET wrapper around it. A separate software group integrates our hardware
+in a C# application, and the principal developers are all pretty keen
+on C# as a language.</p>
+<p>Parenthetically I'd note that I've long felt that dynamic languages like
+Python are well-suited for testing tasks, going so far as to write a Boost
+wrapper around a custom expression parser at my old job for unit testing:
+mocking up 40-50 tests and writing the wrapper consumed roughly four hours
+of time, and a lot of that was trying to understand the virtually non-existent
+Boost documentation. It was a great deal faster than your standard 
+compile-execute-report method and integrated into our already-existing 
+test framework (which I also wrote in Python).</p>
+<p>We've been trying to identify a few issues in some third-party hardware over
+the past few weeks, and that means using an oscilloscope. For a software guy
+like me, learning to use the scope--and to program it--has been harder than I
+had expected.</p>
+<p>Python offers a couple of key feature that make this process a lot easier
+than might be expected:</p>
+<ul>
+<li>dynamic runtime attribute binding</li>
+<li>decorators</li>
+</ul>
+<p>Python treats functions as first-order objects, so functions can consume
+other functions and return functions as a result: this is what a decorator
+is. Python has some syntactic sugar for doing this:</p>
+<div class="codehilite"><pre><span class="err">@</span><span class="nx">some_decorator</span>
+<span class="nx">def</span> <span class="nx">some_function</span><span class="p">(</span> <span class="nx">some_param</span> <span class="p">)</span><span class="o">:</span>
+    <span class="nx">pass</span>
+</pre></div>
+
+
+<p>In my case, I'd like to be able to instrument a function on the oscilloscope
+dynamically. As it happens, classes that implement <code>__call__</code> can be used as
+decorators, and that's what I ended up doing:</p>
+<div class="codehilite"><pre><span class="nx">osc</span> <span class="o">=</span> <span class="nx">Oscilloscope</span><span class="p">(</span> <span class="nx">ip_address</span> <span class="p">)</span>
+<span class="nx">instrumented_function</span> <span class="o">=</span> <span class="nx">osc</span><span class="p">(</span> <span class="nx">instrumented_function</span> <span class="p">)</span>
+</pre></div>
+
+
+<p>(This second line is equivalent to the syntactic sugar of function
+decoration. Those who were used to the old-style way of declaring methods 
+using <code>staticmethod</code> in Python should be familiar.)</p>
+<p>I'll discuss implementation later, if time permits; as a final point, I'd
+note that what's really nice here is that it offers a complete aspect-oriented
+way of coding: when I want to instrument hardware on the scope when running a
+function, none of the code I wrote originally is polluted by what I've 
+written now. This sort of flexibility is one of the reasons I really love
+working with Python.</p></div>
+        <footer class="article-footer">
+            <a data-url="http://www.ccil.org/~ethanm/bloghttp://www.ccil.org/~ethanm/blog/AOP-with-Python/" class="article-share-link">Share</a>
+
+
+            <ul class="article-tag-list">
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="http://www.ccil.org/~ethanm/blog/tags/python">python</a></li>
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="http://www.ccil.org/~ethanm/blog/tags/aspect-oriented_programming">aspect-oriented programming</a></li>
+            </ul>
+
+        </footer>
+    </div>
+</article>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+  <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+  <div class="sidebar-top">
+    <p>follow:</p>
+    <ul class="social-links">
+
+
+
+
+
+
+        <li><a class="social-tooltip" title="rss" href="http://www.ccil.org/~ethanm/blog/rss.xml" target="_blank"><i id="icon-rss" class="icon"></i></a></li>
+
+    </ul>
+  </div>
+
+  <div class="widgets-container">
+        <div class="widget-wrap">
+<h3 class="widget-title">recents</h3>
+<div class="widget">
+    <ul id="recent-post" class="">
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/Programming-Potpourri/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/Programming-Potpourri/" class="title">Programming Potpourri</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-11</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection-Conclusion/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection-Conclusion/" class="title">O(n) Point Duplicate Detection Conclusion</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-03</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection/" class="title">O(n) Point Duplicate Detection</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-02</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/AOP-and-Python,-part-II/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/AOP-and-Python,-part-II/" class="title">AOP and Python, part II</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-01-30</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/AOP-with-Python/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/AOP-with-Python/" class="title">AOP with Python</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-01-28</time></p>
+            </div>
+        </li>
+    </ul>
+</div>
+</div>
+
+        <div class="widget-wrap widget-list">
+    <h3 class="widget-title">categories</h3>
+    <div class="widget">
+        <ul class="category-list">
+                <li class="category-list-item">
+                <a class="category-list-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">
+                    programming
+                </a>
+                <span class="category-list-count">6</span>
+                </li>
+                <li class="category-list-item">
+                <a class="category-list-link" href="http://www.ccil.org/~ethanm/blog/categories/construction">
+                    construction
+                </a>
+                <span class="category-list-count">2</span>
+                </li>
+        </ul>
+    </div>
+</div>
+
+        <div class="widget-wrap widget-list">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+        <ul class="archive-list">
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="http://www.ccil.org/~ethanm/blog/archives/2016/04">Apr 2016</a>
+                <span class="archive-list-count">3</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="http://www.ccil.org/~ethanm/blog/archives/2016/01">Jan 2016</a>
+                <span class="archive-list-count">3</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="http://www.ccil.org/~ethanm/blog/archives/2015/11">Nov 2015</a>
+                <span class="archive-list-count">2</span>
+                </li>
+        </ul>
+    </div>
+</div>
+
+        <div class="widget-wrap widget-float">
+<h3 class="widget-title">tag cloud</h3>
+<div class="widget tagcloud">
+    <a href="http://www.ccil.org/~ethanm/blog/tags/construction" style="font-size: 10px;">construction</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/premature_optimization" style="font-size: 10px;">premature optimization</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/python" style="font-size: 10px;">python</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/aspect-oriented_programming" style="font-size: 10px;">aspect-oriented programming</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/programming_potpourri" style="font-size: 10px;">programming potpourri</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/numpy" style="font-size: 10px;">numpy</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/programming" style="font-size: 10px;">programming</a>
+</div>
+</div>
+
+
+  </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+<div class="container">
+    <div class="container-inner">
+        <a id="back-to-top" href="javascript:;"><i class="icon" id="icon-angle-up"></i></a>
+        <div class="credit">
+            <h1 class="logo-wrap">
+                <a href="http://www.ccil.org/~ethanm/blog/" class="logo">Ethan</a>
+            </h1>
+            <p>© 2015 Ethan</p>
+            <p>Powered by <a href="//crotal.org/" target="_blank">Crotal</a>. Theme by <a href="http://alxmedia.se/themes/hueman/" target="_blank">Alexander Agnarson</a></p>
+        </div>
+    </div>
+</div>
+</footer>
+
+</body>
+
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
+
+
+
+
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="http://www.ccil.org/~ethanm/blog/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/scrollLoading/jquery.scrollLoading.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/scrollLoading/main.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/js/html-patch.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/js/script.js" type="text/javascript"></script>
+
+
+

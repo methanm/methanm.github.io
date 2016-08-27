@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" /><title>AOP and Python, part II</title>
+        <meta name="author" content="Ethan">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta property="og:site_name" content="">
+        <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" />-->
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/css/style.css" type="text/css">
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/css/pygments.css" type="text/css">
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/fancybox/jquery.fancybox.css" type="text/css">
+        <link rel="stylesheet" href="http://www.ccil.org/~ethanm/blog/scrollLoading/style.css" type="text/css">
+
+        <link href='//fonts.googleapis.com/css?family=Titillium+Web:300,400,600' rel='stylesheet' type='text/css'>
+        <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" href="http://www.ccil.org/~ethanm/blog/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="http://www.ccil.org/~ethanm/blog/favicon.ico" type="image/x-icon">
+        <link rel="apple-apple-touch-icon" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-iphone-60x60.png">
+        <link rel="apple-apple-touch-icon" sizes="60x60" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-ipad-76x76.png">
+        <link rel="apple-apple-touch-icon" sizes="114x114" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-iphone-retina-120x120.png">
+        <link rel="apple-apple-touch-icon" sizes="144x144" href="http://www.ccil.org/~ethanm/blog/apple-touch-icon-ipad-retina-152x152.png">
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+<div id="header-outer" class="outer">
+    <div class="container">
+        <div class="container-inner">
+            <div id="header-title">
+                <h1 class="logo-wrap">
+                    <a href="http://www.ccil.org/~ethanm/blog/" class="logo">Ethan</a>
+                </h1>
+
+                <h2 class="subtitle-wrap">
+                    <p class="subtitle">I write what I think</p>
+                </h2>
+
+            </div>
+            <div id="header-inner" class="nav-container">
+                <a id="main-nav-toggle" class="nav-icon"></a>
+                <div class="nav-container-inner">
+                    <ul id="main-nav">
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="http://www.ccil.org/~ethanm/blog/">Home</a></li>
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="http://www.ccil.org/~ethanm/blog/archives">Archives</a></li>
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="http://www.ccil.org/~ethanm/blog/about">About</a></li>
+                    </ul>
+                    <nav id="sub-nav">
+                    <div id="search-form-wrap">
+                        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:http://www.ccil.org/~ethanm/bloghttp://www.ccil.org/~ethanm/blog/"></form>
+                    </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+                            <h1 class="header">Article</h1>
+                        </div>
+                        <div class="main-body-content">
+                            
+
+
+
+
+
+
+<article class="article article-single article-type-article" itemscope="" itemprop="blogarticle">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">AOP and Python, part II</h1>
+        </header>
+
+        <p class="article-byline">
+            <a href="http://www.ccil.org/~ethanm/blog/AOP-and-Python,-part-II/" class="article-date">
+                <time datetime="2016-01-30T09:48:00.000Z" itemprop="datePublished">2016-01-30</time>
+            </a>
+        </p>
+        <div class="article-entry" itemprop="articleBody"><p>So the last article was written rather hastily during a bout of
+multi-tasking. I'd like to revisit the idea of aspect-oriented programming
+using Python's decorators.</p>
+<p>There are a lot of good introductions to decorators, but I think Bruce Eckel's
+two-part series (<a href="http://www.artima.com/weblogs/viewpost.jsp?thread=240808">Part One</a>
+and <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=240845">Part Two</a>) were
+the most useful for me when trying to understand how to create a decorator out
+of a class. And of course there is the <a href="https://en.wikipedia.org/wiki/Aspect-oriented_programming">ubiquitous Wikipedia article</a>
+for those who want a fuller definition of AOP.</p>
+<p>The basic idea behind AOP is that our code is often a stew
+of infrastructure and business logic. The canonical example is logging: every
+developer understands the importance of logging and well-instrumented code, 
+even though we often don't expose it to the user. The most ubiquitous C 
+debugger is, after all, <code>printf</code>.</p>
+<p>What's a bit frustrating, though, is that logging code rarely has anything to
+do with the actual application we're writing, and it's tedious to read code
+that uses it. It's embarrassing to admit it, but there have been plenty of
+times in my career where I'd write code that looked like this:</p>
+<div class="codehilite"><pre><span class="nt">if</span> <span class="o">(&lt;</span><span class="nt">some</span> <span class="nt">condition</span><span class="o">&gt;)</span> <span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Break here: %s, %d\n&quot;</span><span class="o">,</span> <span class="n">__FILE__</span><span class="o">,</span> <span class="n">__LINE__</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Decorators don't exactly offer us line-by-line control the way that injecting
+<code>printf</code>s into the code does, but they do allow us to shift logic away from
+the business function by writing functions that return functions.</p>
+<p>A classic example in Python is an entry-exit decorator that allows us
+to trace function execution:</p>
+<div class="codehilite"><pre>def entex (func):
+    def wrapped_func (*args, **kwargs):
+        print (&quot;Entering &quot; + func.__name__)
+        res = func (*args, **kwargs)
+        print (&quot;Exited &quot; + func__name__)
+
+        return res
+
+    return wrapped_func
+</pre></div>
+
+
+<p>(There are a lot of times such a function could be helpful. In my previous 
+work, we spent a lot of time working on syntax trees--at least of a sort--that
+were pretty complicated. Being able to trace snippets after the fact would
+have been pretty helpful, since stepping through a hundred functions was a bit
+of a pain. Post-mortem analysis was usually easier.)</p>
+<p>Now then:</p>
+<div class="codehilite"><pre>def hello_world (name):
+    print (&quot;Hello, &quot; + name)
+</pre></div>
+
+
+<p>is about the simplest function you can write in Python. Let's instrument the
+entry and exit points:</p>
+<div class="codehilite"><pre>@ent_ex
+def hello_world (name):
+    print (&quot;Hello, &quot; + name)
+
+&gt;&gt;&gt; hello_world(&quot;Ethan&quot;)
+Entering hello_world
+Hello, Ethan
+Exited hello_world
+</pre></div>
+
+
+<p>The <code>@ent_ex</code> prefix is the Python decorator syntax, which is just a
+bit of sugar for <code>hello_world = entex (hello_world)</code>. It's a boring decorator
+of course, but we can imagine there are other cases that could be more
+interesting. It's a bit unpythonic, but we could imagine imposing strict type
+checking:</p>
+<div class="codehilite"><pre>@expects(str)
+def hello_world (name):
+    print (&quot;Hello, &quot; + name)
+
+&gt;&gt;&gt; hello_world(1)
+&lt;type &#39;int&#39;&gt; argument should be a &lt;type &#39;str&#39;&gt;
+</pre></div>
+
+
+<p>This can be accomplished with a little wizardry:</p>
+<div class="codehilite"><pre>def expects (*types):
+    def wrap (func):
+        def wrapped_func (*args, **kwargs):
+            for arg, typ in zip(args, types):
+              if type(arg) is not typ:
+                 print (str(type(arg)) + &quot; argument should be a &quot; + str(typ))
+                 return False
+
+              else:
+                 return func (*args, **kwargs)
+
+        return wrapped_func
+
+     return wrap
+</pre></div>
+
+
+<p>This is a little more complicated than the first example because the decorator 
+function takes arguments. In this case, we need to have an enclosing scope to
+hold the arguments to the decorator prior to wrapping the function passed to
+it.</p>
+<p>Naturally, decorators can be composed:</p>
+<div class="codehilite"><pre>@entex
+@expects(str)
+def hello_world(name):
+    print (&quot;Hello, &quot; + name)
+</pre></div>
+
+
+<p>This gets a little ugly, which any Pythonista will tell you:</p>
+<div class="codehilite"><pre>Entering wrapped_func
+Hello, Ethan
+Exited wrapped_func
+</pre></div>
+
+
+<p>What we'd like, of course, is for <code>entex</code> to work on <code>hello_world</code>, but it
+instead applies to the <code>expects</code> function. There is a module, <code>functools</code>,
+that includes a decorator for just this purpose (<code>wraps</code>).
+<a href="https://docs.python.org/2/library/functools.html">Functools</a> is super helpful
+and has a lot of utility (<code>partial</code> is really handy for IronPython event
+handling).  Read the documentation for more, but here is a quick and dirty 
+illustration:</p>
+<div class="codehilite"><pre><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="k">def</span> <span class="nf">entex</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapped_func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">&quot;Entering &quot;</span> <span class="o">+</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">&quot;Exited &quot;</span> <span class="o">+</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">return</span> <span class="n">wrapped_func</span>
+
+<span class="k">def</span> <span class="nf">expects</span> <span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrap</span> <span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapped_func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">typ</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">typ</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span> <span class="o">+</span> <span class="s">&quot; argument should be a &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">wrapped_func</span>
+
+    <span class="k">return</span> <span class="n">wrap</span>
+
+<span class="nd">@entex</span>
+<span class="nd">@expects</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">hello_world</span> <span class="p">(</span><span class="s">&quot;Ethan&quot;</span><span class="p">)</span>
+    <span class="n">hello_world</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">Entering</span> <span class="n">hello_world</span>
+<span class="n">Hello</span><span class="p">,</span> <span class="n">Ethan</span>
+<span class="n">Exited</span> <span class="n">hello_world</span>
+<span class="n">Entering</span> <span class="n">hello_world</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;int&#39;</span><span class="o">&gt;</span> <span class="n">argument</span> <span class="n">should</span> <span class="n">be</span> <span class="n">a</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;str&#39;</span><span class="o">&gt;</span>
+<span class="n">Exited</span> <span class="n">hello_world</span>
+</pre></div>
+
+
+<p>As with any conversation about decorators, there's a lot left unsaid here. The
+idea of modifying function behavior is quite powerful: it allows us to extend
+the concept of decoupling components to decoupling functional logic. Code 
+becomes a bit tidier and easier to read, which is never a bad thing, and it
+also frees developers to think more concisely about The Problem At Hand
+without being distracted by infrastructural concerns from the outset.</p></div>
+        <footer class="article-footer">
+            <a data-url="http://www.ccil.org/~ethanm/bloghttp://www.ccil.org/~ethanm/blog/AOP-and-Python,-part-II/" class="article-share-link">Share</a>
+
+
+            <ul class="article-tag-list">
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="http://www.ccil.org/~ethanm/blog/tags/python">python</a></li>
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="http://www.ccil.org/~ethanm/blog/tags/aspect-oriented_programming">aspect-oriented programming</a></li>
+            </ul>
+
+        </footer>
+    </div>
+</article>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+  <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+  <div class="sidebar-top">
+    <p>follow:</p>
+    <ul class="social-links">
+
+
+
+
+
+
+        <li><a class="social-tooltip" title="rss" href="http://www.ccil.org/~ethanm/blog/rss.xml" target="_blank"><i id="icon-rss" class="icon"></i></a></li>
+
+    </ul>
+  </div>
+
+  <div class="widgets-container">
+        <div class="widget-wrap">
+<h3 class="widget-title">recents</h3>
+<div class="widget">
+    <ul id="recent-post" class="">
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/Programming-Potpourri/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/Programming-Potpourri/" class="title">Programming Potpourri</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-11</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection-Conclusion/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection-Conclusion/" class="title">O(n) Point Duplicate Detection Conclusion</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-03</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/O(n)-Point-Duplicate-Detection/" class="title">O(n) Point Duplicate Detection</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-02</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/AOP-and-Python,-part-II/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/AOP-and-Python,-part-II/" class="title">AOP and Python, part II</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-01-30</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="http://www.ccil.org/~ethanm/blog/AOP-with-Python/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="http://www.ccil.org/~ethanm/blog/AOP-with-Python/" class="title">AOP with Python</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-01-28</time></p>
+            </div>
+        </li>
+    </ul>
+</div>
+</div>
+
+        <div class="widget-wrap widget-list">
+    <h3 class="widget-title">categories</h3>
+    <div class="widget">
+        <ul class="category-list">
+                <li class="category-list-item">
+                <a class="category-list-link" href="http://www.ccil.org/~ethanm/blog/categories/programming">
+                    programming
+                </a>
+                <span class="category-list-count">6</span>
+                </li>
+                <li class="category-list-item">
+                <a class="category-list-link" href="http://www.ccil.org/~ethanm/blog/categories/construction">
+                    construction
+                </a>
+                <span class="category-list-count">2</span>
+                </li>
+        </ul>
+    </div>
+</div>
+
+        <div class="widget-wrap widget-list">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+        <ul class="archive-list">
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="http://www.ccil.org/~ethanm/blog/archives/2016/04">Apr 2016</a>
+                <span class="archive-list-count">3</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="http://www.ccil.org/~ethanm/blog/archives/2016/01">Jan 2016</a>
+                <span class="archive-list-count">3</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="http://www.ccil.org/~ethanm/blog/archives/2015/11">Nov 2015</a>
+                <span class="archive-list-count">2</span>
+                </li>
+        </ul>
+    </div>
+</div>
+
+        <div class="widget-wrap widget-float">
+<h3 class="widget-title">tag cloud</h3>
+<div class="widget tagcloud">
+    <a href="http://www.ccil.org/~ethanm/blog/tags/construction" style="font-size: 10px;">construction</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/premature_optimization" style="font-size: 10px;">premature optimization</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/python" style="font-size: 10px;">python</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/aspect-oriented_programming" style="font-size: 10px;">aspect-oriented programming</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/programming_potpourri" style="font-size: 10px;">programming potpourri</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/numpy" style="font-size: 10px;">numpy</a>
+    <a href="http://www.ccil.org/~ethanm/blog/tags/programming" style="font-size: 10px;">programming</a>
+</div>
+</div>
+
+
+  </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+<div class="container">
+    <div class="container-inner">
+        <a id="back-to-top" href="javascript:;"><i class="icon" id="icon-angle-up"></i></a>
+        <div class="credit">
+            <h1 class="logo-wrap">
+                <a href="http://www.ccil.org/~ethanm/blog/" class="logo">Ethan</a>
+            </h1>
+            <p>© 2015 Ethan</p>
+            <p>Powered by <a href="//crotal.org/" target="_blank">Crotal</a>. Theme by <a href="http://alxmedia.se/themes/hueman/" target="_blank">Alexander Agnarson</a></p>
+        </div>
+    </div>
+</div>
+</footer>
+
+</body>
+
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
+
+
+
+
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="http://www.ccil.org/~ethanm/blog/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/scrollLoading/jquery.scrollLoading.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/scrollLoading/main.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/js/html-patch.js" type="text/javascript"></script>
+<script src="http://www.ccil.org/~ethanm/blog/js/script.js" type="text/javascript"></script>
+
+
+
