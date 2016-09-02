@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" /><title>Racket and DSLs</title>
+        <meta name="author" content="Ethan">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta property="og:site_name" content="">
+        <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css" />-->
+        <link rel="stylesheet" href="https://methanm.github.io/css/style.css" type="text/css">
+        <link rel="stylesheet" href="https://methanm.github.io/css/pygments.css" type="text/css">
+        <link rel="stylesheet" href="https://methanm.github.io/fancybox/jquery.fancybox.css" type="text/css">
+        <link rel="stylesheet" href="https://methanm.github.io/scrollLoading/style.css" type="text/css">
+
+        <link href='//fonts.googleapis.com/css?family=Titillium+Web:300,400,600' rel='stylesheet' type='text/css'>
+        <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" href="https://methanm.github.io/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="https://methanm.github.io/favicon.ico" type="image/x-icon">
+        <link rel="apple-apple-touch-icon" href="https://methanm.github.io/apple-touch-icon-iphone-60x60.png">
+        <link rel="apple-apple-touch-icon" sizes="60x60" href="https://methanm.github.io/apple-touch-icon-ipad-76x76.png">
+        <link rel="apple-apple-touch-icon" sizes="114x114" href="https://methanm.github.io/apple-touch-icon-iphone-retina-120x120.png">
+        <link rel="apple-apple-touch-icon" sizes="144x144" href="https://methanm.github.io/apple-touch-icon-ipad-retina-152x152.png">
+        <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+<div id="header-outer" class="outer">
+    <div class="container">
+        <div class="container-inner">
+            <div id="header-title">
+                <h1 class="logo-wrap">
+                    <a href="https://methanm.github.io/" class="logo">Ethan's Thoughts</a>
+                </h1>
+
+                <h2 class="subtitle-wrap">
+                    <p class="subtitle">I write what I think.</p>
+                </h2>
+
+            </div>
+            <div id="header-inner" class="nav-container">
+                <a id="main-nav-toggle" class="nav-icon"></a>
+                <div class="nav-container-inner">
+                    <ul id="main-nav">
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="https://methanm.github.io/">Home</a></li>
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="https://methanm.github.io/archives">Archives</a></li>
+                                <li class="main-nav-list-item"><a class="main-nav-list-link" href="https://methanm.github.io/about">About</a></li>
+                    </ul>
+                    <nav id="sub-nav">
+                    <div id="search-form-wrap">
+                        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:https://methanm.github.io/https://methanm.github.io/"></form>
+                    </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+                            <h1 class="header">Article</h1>
+                        </div>
+                        <div class="main-body-content">
+                            
+
+
+
+
+
+
+<article class="article article-single article-type-article" itemscope="" itemprop="blogarticle">
+    <div class="article-inner">
+
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Racket and DSLs</h1>
+        </header>
+
+        <p class="article-byline">
+            <a href="https://methanm.github.io/Racket-and-DSLs/" class="article-date">
+                <time datetime="2016-09-02T16:36:00.000Z" itemprop="datePublished">2016-09-02</time>
+            </a>
+        </p>
+        <div class="article-entry" itemprop="articleBody"><p>When I was in college, I took a one-credit LISP course taught by 
+<a href="http://web.interhack.com/people/cmcurtin">Matt Curtin</a>, and I also 
+implemented two Scheme interpreters for my undergraduate (C++) and 
+graduate (Java) programming languages courses. As part of my teaching stint at
+the university, I implemented a simple recursive hailstone series generator
+for our students to show them how a functional language like Scheme differs 
+from what we had learned in Java.<sup>1</sup> One of the labs in Matt's class
+was titled, "Isn't this just a one-credit course?" and involved finding
+<a href="https://en.wikipedia.org/wiki/Equivalence_class">equivalence classes</a> in
+LISP lists. (There were probably some restrictions on what functions we were
+allowed to use.)</p>
+<p>I recently worked on a project for doing conditional text templating. It's a
+bit of a hassle because traditional string templates in Python are not 
+conditional at all. (Different language was used, for example, for the first
+occurrence of some data points.) Many template engines exist in Python, of
+course, and had I some foresight I might have pursued them as viable options
+for my own work. For some reason I had the thought to pursue creating a DSL 
+for this sort of thing and happened upon an 
+<a href="http://queue.acm.org/detail.cfm?id=2068896">article about DSLs in Racket</a>, 
+one of many LISP dialects. When I started reading the Racket documentation, I
+found it's generated by using a DSL written in Racket (see their
+<a href="http://docs.racket-lang.org/scribble/index.html">Scribble documentation</a>).
+I was intrigued&mdash;literate programming is another one of those things
+that always sounded good in practice, but no one really wanted to do (except
+for those guys who wrote <a href="http://pbrt.org">pbrt</a>?).</p>
+<p>Is it possible to write some kind of templating engine this way? Is it a
+terrible, no-good, very-bad idea? Probably it is, but it also seems like the
+sort of project that would introduce a programming language and offer a few
+insights into some computer sciency problems.</p>
+<p>It seems to me that Scribble does a lot of what I might be interested in
+doing already, except for the pesky issues of parsing input content (from HTML
+or databases, for example), unless there are Racket libraries for this 
+purpose. (<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">Beautiful Soup</a>
+really was quite helpful in doing this; for all of Python's warts, and there
+are many, there are some outstanding libraries available, and I do like its
+interoperability.)</p>
+<p>At the same time, this touches on some issues I had with my previous work in
+ASN.1&mdash;abstract syntax trees don't come for Free. Can Racket do something
+better than the flex/bison parsers we were using previously? I don't know that
+I'll make much progress here, what with my tendency to pick up projects and
+put them down, but I'll write about it as opportunity permits.</p>
+<p>[1] E.g.,</p>
+<p>(define (hailstone x)
+      (if (= 1 x) '(1)
+         (if (even? x) (cons x (hailstone (/ x 2)))
+            (cons x (hailstone (+ 1 (* x 3)))))))</p></div>
+        <footer class="article-footer">
+            <a data-url="https://methanm.github.io/https://methanm.github.io/Racket-and-DSLs/" class="article-share-link">Share</a>
+
+
+            <ul class="article-tag-list">
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/racket">racket</a></li>
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/dsls">dsls</a></li>
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/programming">programming</a></li>
+            </ul>
+
+        </footer>
+    </div>
+</article>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+  <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+  <div class="sidebar-top">
+    <p>follow:</p>
+    <ul class="social-links">
+
+
+
+
+
+
+        <li><a class="social-tooltip" title="rss" href="https://methanm.github.io/rss.xml" target="_blank"><i id="icon-rss" class="icon"></i></a></li>
+
+    </ul>
+  </div>
+
+  <div class="widgets-container">
+        <div class="widget-wrap">
+<h3 class="widget-title">recents</h3>
+<div class="widget">
+    <ul id="recent-post" class="">
+        <li>
+            <div class="item-thumbnail">
+                <a href="https://methanm.github.io/Racket-and-DSLs/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="https://methanm.github.io/categories/programming">Programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="https://methanm.github.io/Racket-and-DSLs/" class="title">Racket and DSLs</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-09-02</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="https://methanm.github.io/Moving-yet-again/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="https://methanm.github.io/categories/construction">Construction
+                    </a>
+                </p>
+                <p class="item-title"><a href="https://methanm.github.io/Moving-yet-again/" class="title">Moving yet again</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-08-28</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="https://methanm.github.io/Programming-Potpourri/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="https://methanm.github.io/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="https://methanm.github.io/Programming-Potpourri/" class="title">Programming Potpourri</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-11</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection-Conclusion/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="https://methanm.github.io/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection-Conclusion/" class="title">O(n) Point Duplicate Detection Conclusion</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-03</time></p>
+            </div>
+        </li>
+        <li>
+            <div class="item-thumbnail">
+                <a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection/" class="thumbnail">
+                        <span class="thumbnail-image thumbnail-none"></span>
+                </a>
+            </div>
+            <div class="item-inner">
+                <p class="item-category">
+                    <a class="article-category-link" href="https://methanm.github.io/categories/programming">programming
+                    </a>
+                </p>
+                <p class="item-title"><a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection/" class="title">O(n) Point Duplicate Detection</a></p>
+                <p class="item-date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-02</time></p>
+            </div>
+        </li>
+    </ul>
+</div>
+</div>
+
+        <div class="widget-wrap widget-list">
+    <h3 class="widget-title">categories</h3>
+    <div class="widget">
+        <ul class="category-list">
+                <li class="category-list-item">
+                <a class="category-list-link" href="https://methanm.github.io/categories/programming">
+                    programming
+                </a>
+                <span class="category-list-count">7</span>
+                </li>
+                <li class="category-list-item">
+                <a class="category-list-link" href="https://methanm.github.io/categories/construction">
+                    Construction
+                </a>
+                <span class="category-list-count">3</span>
+                </li>
+        </ul>
+    </div>
+</div>
+
+        <div class="widget-wrap widget-list">
+    <h3 class="widget-title">archives</h3>
+    <div class="widget">
+        <ul class="archive-list">
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="https://methanm.github.io/archives/2016/09">Sep 2016</a>
+                <span class="archive-list-count">1</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="https://methanm.github.io/archives/2016/08">Aug 2016</a>
+                <span class="archive-list-count">1</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="https://methanm.github.io/archives/2016/04">Apr 2016</a>
+                <span class="archive-list-count">3</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="https://methanm.github.io/archives/2016/01">Jan 2016</a>
+                <span class="archive-list-count">3</span>
+                </li>
+                <li class="archive-list-item">
+                <a class="archive-list-link" href="https://methanm.github.io/archives/2015/11">Nov 2015</a>
+                <span class="archive-list-count">2</span>
+                </li>
+        </ul>
+    </div>
+</div>
+
+        <div class="widget-wrap widget-float">
+<h3 class="widget-title">tag cloud</h3>
+<div class="widget tagcloud">
+    <a href="https://methanm.github.io/tags/construction" style="font-size: 10px;">construction</a>
+    <a href="https://methanm.github.io/tags/programming" style="font-size: 10px;">programming</a>
+    <a href="https://methanm.github.io/tags/python" style="font-size: 10px;">python</a>
+    <a href="https://methanm.github.io/tags/aspect-oriented_programming" style="font-size: 10px;">aspect-oriented programming</a>
+    <a href="https://methanm.github.io/tags/premature_optimization" style="font-size: 10px;">premature optimization</a>
+    <a href="https://methanm.github.io/tags/programming_potpourri" style="font-size: 10px;">programming potpourri</a>
+    <a href="https://methanm.github.io/tags/numpy" style="font-size: 10px;">numpy</a>
+    <a href="https://methanm.github.io/tags/racket" style="font-size: 10px;">racket</a>
+    <a href="https://methanm.github.io/tags/dsls" style="font-size: 10px;">dsls</a>
+</div>
+</div>
+
+
+  </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+<div class="container">
+    <div class="container-inner">
+        <a id="back-to-top" href="javascript:;"><i class="icon" id="icon-angle-up"></i></a>
+        <div class="credit">
+            <h1 class="logo-wrap">
+                <a href="https://methanm.github.io/" class="logo">Ethan's Thoughts</a>
+            </h1>
+            <p>© 2015 Ethan</p>
+            <p>Powered by <a href="//crotal.org/" target="_blank">Crotal</a>. Theme by <a href="http://alxmedia.se/themes/hueman/" target="_blank">Alexander Agnarson</a></p>
+        </div>
+    </div>
+</div>
+</footer>
+
+</body>
+
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
+
+
+
+
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="https://methanm.github.io/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="https://methanm.github.io/scrollLoading/jquery.scrollLoading.js" type="text/javascript"></script>
+<script src="https://methanm.github.io/scrollLoading/main.js" type="text/javascript"></script>
+<script src="https://methanm.github.io/js/html-patch.js" type="text/javascript"></script>
+<script src="https://methanm.github.io/js/script.js" type="text/javascript"></script>
+
+
+
