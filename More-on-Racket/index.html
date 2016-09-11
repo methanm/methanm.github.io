@@ -107,7 +107,8 @@ a few thoughts.</p>
 concision of the language. When I was programming in Java for school and for
 support at work, I was at first really impressed by the way Eclipse could 
 generate all that boilerplate code. Hauling up the IDE, though, was painful.
-(I only ever found Netbeans useful, I confess, for its ability to parse C
+(I only ever found the alternative, Netbeans, useful, I confess, for its
+ability to parse C
 macros and dump the code out&mdash;this was of inestimable value when
 implementing the <a href="http://www.obj-sys.com/blog/?p=739">zero on free</a> feature
 of the OSys custom memory manager.)</p>
@@ -127,6 +128,18 @@ work on my part (or that of my IDE) and to admit changes if needed by way of
 decorators was welcome. It was short, comprehensible, and required less
 code. (Of course, Python doesn't really encapsulate anything&mdash;it, like
 Perl, demands quite a bit from programmers to be written well.)</p>
+<p>So back to Project Euler; <a href="https://projecteuler.net/problem=2">the second problem</a>
+consists of summing even Fibonacci numbers below four million. The bulk of
+the work is done in calculating the numbers. This is a great problem for 
+learning about the perils of recursion, tail-recursive optimization, and
+memoization. The naive solution is computationally very inefficient because
+it doesn't reuse calculations from previous iterations (we're building, after
+all, from the end to the beginning).</p>
+<p>As is often the case in natural languages, sometimes we want to translate
+from one language to another; so I thought I would write a Pythonic solution
+(in a couple of ways&mdash;the searches always lead you down rabbit trails,
+<a href="http://www.jargon.net/jargonfile/t/tailrecursion.html">like the Jargon File definition of tail recursion</a>).
+So here are a couple of implementations with some thoughts:</p>
 <div class="codehilite"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -146,8 +159,8 @@ Perl, demands quite a bit from programmers to be written well.)</p>
 </pre></div>
 
 
-<p>(This is a tail-recursive version, and not one that's particularly great.
-Probably it's smarter to do something like this:</p>
+<p>This is a tail-recursive version, and not one that's particularly great.
+Probably it's smarter to make an iterative version instead:</p>
 <div class="codehilite"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -160,7 +173,8 @@ Probably it's smarter to do something like this:</p>
 </pre></div>
 
 
-<p>In Racket, this feels more complicated to me:</p>
+<p>Racket has iterative options (<code>for/list</code> among others) that we could use, 
+but it encourages recursion. So here's a first stab at it:</p>
 <div class="codehilite"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">fib</span> <span class="nv">n</span><span class="p">)</span>
   <span class="p">(</span><span class="k">letrec </span><span class="p">((</span><span class="nf">fib-list</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">1</span><span class="p">))</span>
            <span class="p">(</span><span class="nf">sum-last</span> <span class="p">(</span><span class="err">λ</span> <span class="p">(</span><span class="nf">l</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">list-ref </span><span class="nv">l</span> <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">length </span><span class="nv">l</span><span class="p">)</span> <span class="mi">2</span><span class="p">))</span> <span class="p">(</span><span class="nf">last</span> <span class="nv">l</span><span class="p">))))</span>
@@ -173,7 +187,16 @@ Probably it's smarter to do something like this:</p>
 
 
 <p>Really it's a two-line difference: the Racket code is eight lines long, and
-the Python seven (not including whitespace). But which is more readable?</p>
+the Python seven (not including whitespace). But which is more readable?
+I've used some lambdas to make life a little easier to read in the logic
+instead of embedding everything, but this is a little like reading German:
+to understand the dependent clause you have to skip to the end to get the 
+verbs and then go back.</p>
+<p>There are more elegant ways to do this, I bet. It'd be nice, for example, 
+to use a <code>for/list</code> for iteration instead, or simply <code>map</code>; these would
+likely shrink the code-size. On the same token, though, Python also has
+<code>map</code> and <code>filter</code> functions (now objects, I guess), or one can use
+list comprehensions if desired.</p>
 <p>Now probably the real distinction is that Racket will afford more concise code
 using <a href="https://docs.racket-lang.org/reference/match.html">pattern matching</a> 
 (<a href="http://digitalfreepen.com/2014/08/08/compiler-optimization-ii.html">here's a more explicit example</a>
