@@ -361,6 +361,7 @@ body {
 }
 #header-title .subtitle {
   font-size: 16px;
+  font-family: Linux Biolinum, sans-serif;
   font-style: italic;
   line-height: 70px;
   color: rgba(255,255,255,0.7);
