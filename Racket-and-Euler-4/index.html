@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="UTF-8" /><title>Archive: 2016/08</title>
+        <meta charset="UTF-8" /><title>Racket and Euler 4</title>
         <meta name="author" content="Ethan">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -72,7 +72,7 @@
                 <div class="main-body-inner">
                     <section id="main">
                         <div class="main-body-header">
-                            <h1 class="header"><i class="icon" id="icon-archive"></i>Archive: 2016/08</h1>
+                            <h1 class="header">Article</h1>
                         </div>
                         <div class="main-body-content">
                             
@@ -80,37 +80,111 @@
 
 
 
-        <div class="article-row">
-
-    
 
 
+<article class="article article-single article-type-article" itemscope="" itemprop="blogarticle">
+    <div class="article-inner">
 
-<article class="article article-summary">
-<div class="article-summary-inner">
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Racket and Euler 4</h1>
+        </header>
 
-        <a href="https://methanm.github.io/Moving-yet-again/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="Moving yet again" class="thumbnail-image thumbnail-none"></span>
-        </a>
+        <p class="article-byline">
+            <a href="https://methanm.github.io/Racket-and-Euler-4/" class="article-date">
+                <time datetime="2016-09-25T22:01:00.000Z" itemprop="datePublished">2016-09-25</time>
+            </a>
+        </p>
+        <div class="article-entry" itemprop="articleBody"><p>Playing around with Racket still in the few hours I have during the weeks.
+Thinking functionally has been a good exercise, but I'm still working through
+the question of when it's appropriate to use <code>set!</code> to permute state. Euler
+problem 4, which asks for the largest palindromic number made from the product
+of two three digit numbers, really posed the problem.</p>
+<p>I was inspired a bit by 
+<a href="https://www.jfoconnell.net/2015/04/project-euler-problem-4-in-python/">O'Connell's implementations</a>
+in Python, which included several different avenues for making the results
+more efficient.</p>
+<p>Walking through some solutions, then, we turn first to the preliminaries:</p>
+<div class="codehilite"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">string-reverse</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">list-&gt;string </span><span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">string-&gt;list </span><span class="nv">s</span><span class="p">))))</span>
 
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/construction">construction</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-08-28</time></p>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">palin?</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">([</span><span class="nv">string?</span> <span class="nv">s</span><span class="p">]</span> <span class="p">(</span><span class="nb">equal? </span><span class="nv">s</span> <span class="p">(</span><span class="nf">string-reverse</span> <span class="nv">s</span><span class="p">)))</span>
+        <span class="p">([</span><span class="nv">number?</span> <span class="nv">s</span><span class="p">]</span> <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">mxs</span> <span class="p">(</span><span class="nb">number-&gt;string </span><span class="nv">s</span><span class="p">)))</span>
+                       <span class="p">(</span><span class="nf">palin?</span> <span class="nv">mxs</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">error</span> <span class="s">&quot;I don&#39;t know how to handle anything but strings and numbers.&quot;</span><span class="p">))))</span>
+</pre></div>
+
+
+<p>This is the basic checker for a palindromic number. There are probably faster
+ways to manipulate integral values for this, but I didn't pursue that in my 
+efforts to make things more efficient.</p>
+<p>So let's approach using the naïve method:</p>
+<div class="codehilite"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">euler4-1</span> <span class="nv">low</span> <span class="nv">up</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">apply </span><span class="nv">max</span> 
+         <span class="p">(</span><span class="nf">filter</span> <span class="nv">palin?</span>
+                 <span class="p">(</span><span class="nf">for*/list</span> <span class="p">([</span><span class="nv">i</span> <span class="p">(</span><span class="nf">in-range</span> <span class="nv">low</span> <span class="nv">up</span><span class="p">)]</span>
+                             <span class="p">[</span><span class="nv">j</span> <span class="p">(</span><span class="nf">in-range</span> <span class="nv">low</span> <span class="nv">up</span><span class="p">)])</span>
+                   <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">j</span><span class="p">)))))</span>
+
+<span class="nv">&gt;</span> <span class="p">(</span><span class="nf">time</span> <span class="p">(</span><span class="nf">euler4-1</span> <span class="mi">100</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="nv">cpu</span> <span class="nv">time:</span> <span class="mi">476</span> <span class="nv">real</span> <span class="nv">time:</span> <span class="mi">479</span> <span class="nv">gc</span> <span class="nv">time:</span> <span class="mi">96</span>
+</pre></div>
+
+
+<p>This implementation does twice as much work as it needs to since we repeat
+factors in the <code>i</code> and <code>j</code> loops. We can trim it down very easily by using
+<code>[j (in-range i up)]</code> instead. This produces, not unexpectedly, somewhat
+better results.</p>
+<div class="codehilite"><pre><span></span><span class="nv">&gt;</span> <span class="p">(</span><span class="nf">time</span> <span class="p">(</span><span class="nf">euler4-2</span> <span class="mi">100</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="nv">cpu</span> <span class="nv">time:</span> <span class="mi">248</span> <span class="nv">real</span> <span class="nv">time:</span> <span class="mi">248</span> <span class="nv">gc</span> <span class="nv">time:</span> <span class="mi">48</span> 
+</pre></div>
+
+
+<p>Next, as O'Connell notes, we have to realize that this is a monotonically
+increasing function: we can therefore count <em>down</em> rather than counting
+<em>up</em> and break out of the loop when we find an <code>i,j</code> pair that's both 
+palindromic and smaller than the current maximum.</p>
+<p>This notion of "current maximum," though, implies some state. In functional
+languages right Racket, state is kind of a dirty thing and purists eschew it.
+(To be fair, though, even a <code>for*/list</code> is kind of a dirty thing: we should be
+recursing instead of iterating, right? I guess under the hood we are...)</p>
+<p>Even so, a functional approach using 
+<a href="http://stackoverflow.com/questions/16140122/how-to-create-nested-loop-in-scheme">named lets</a>
+seems dreadfully awkward. Instead, storing the max value in a variable makes
+the most sense to me:</p>
+<div class="codehilite"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">euler4-3</span> <span class="nv">lb</span> <span class="nv">ub</span><span class="p">)</span>
+  <span class="c1">;; This is a non-idiomatic way to do this, but ...</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">mx</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">for*/list</span> <span class="p">([</span><span class="nv">i</span> <span class="p">(</span><span class="nf">in-range</span> <span class="nv">ub</span> <span class="nv">lb</span> <span class="mi">-1</span><span class="p">)]</span>
+                <span class="p">[</span><span class="nv">j</span> <span class="p">(</span><span class="nf">in-range</span> <span class="nv">ub</span> <span class="nv">i</span> <span class="mi">-1</span><span class="p">)]</span>
+                <span class="o">#</span><span class="nv">:when</span> <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">mx</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">j</span><span class="p">))</span> <span class="p">(</span><span class="nf">palin?</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">j</span><span class="p">))))</span>
+      <span class="p">(</span><span class="k">set! </span><span class="nv">mx</span> <span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">j</span><span class="p">)))</span>
+    <span class="nv">mx</span><span class="p">))</span>
+
+<span class="nv">&gt;</span> <span class="p">(</span><span class="nf">time</span> <span class="p">(</span><span class="nf">euler4-3</span> <span class="mi">100</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="nv">cpu</span> <span class="nv">time:</span> <span class="mi">32</span> <span class="nv">real</span> <span class="nv">time:</span> <span class="mi">32</span> <span class="nv">gc</span> <span class="nv">time:</span> <span class="mi">0</span>
+</pre></div>
+
+
+<p>The maximum value is locally scoped and a simple type, so there shouldn't be
+any concern that permuting it will somehow leak out elsewhere. Moreover it
+seems more straightforward to read this code than trying to create nested
+lets with two loops. I'm also a fan of the <code>#:when</code> guard here that prevents
+execution unless the conditions are met (i.e., the loop body executes only
+when the maximum value is less than i * j and i * j is a palindrome).</p></div>
+        <footer class="article-footer">
+            <a data-url="https://methanm.github.io/https://methanm.github.io/Racket-and-Euler-4/" class="article-share-link">Share</a>
+
+
+            <ul class="article-tag-list">
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/racket">racket</a></li>
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/euler">euler</a></li>
+            </ul>
+
+        </footer>
     </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/Moving-yet-again/" class="title">Moving yet again</a>
-    </h2>
-    <p class="article-excerpt">
-        On 31 August, CCIL will be shutting down its main
-servers, so I have been forced to move from my previous home to another;
-GitHub offers page hosting&mdash;a win for
-blogging&mdash;and deployment is a
-    </p>
-</div>
 </article>
 
-
-        </div>
 
 
                         </div>
