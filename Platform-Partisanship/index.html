@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="UTF-8" /><title>programming</title>
+        <meta charset="UTF-8" /><title>Platform Partisanship</title>
         <meta name="author" content="Ethan">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -72,7 +72,7 @@
                 <div class="main-body-inner">
                     <section id="main">
                         <div class="main-body-header">
-                            <h1 class="header"><i class="icon" id="icon-category"></i>category: <em class="page-title-link">programming</em></h1>
+                            <h1 class="header">Article</h1>
                         </div>
                         <div class="main-body-content">
                             
@@ -80,313 +80,104 @@
 
 
 
-        <div class="article-row">
-
-    
 
 
+<article class="article article-single article-type-article" itemscope="" itemprop="blogarticle">
+    <div class="article-inner">
 
-<article class="article article-summary">
-<div class="article-summary-inner">
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Platform Partisanship</h1>
+        </header>
 
-        <a href="https://methanm.github.io/Programming-Potpourri/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="Programming Potpourri" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-11</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/Programming-Potpourri/" class="title">Programming Potpourri</a>
-    </h2>
-    <p class="article-excerpt">
-        So supposedly I was done talking about point duplicate detection in linear
-time, but one of the guys at work suggested another good trick: using 
-polar coordinates rather than cartesian. This comes wi
-    </p>
-</div>
-</article>
-
-
-
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/Platform-Partisanship/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="Platform Partisanship" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">Programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-09-30</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/Platform-Partisanship/" class="title">Platform Partisanship</a>
-    </h2>
-    <p class="article-excerpt">
-        Every so often I want to write a tools post and go on about what I use
+        <p class="article-byline">
+            <a href="https://methanm.github.io/Platform-Partisanship/" class="article-date">
+                <time datetime="2016-09-30T22:12:00.000Z" itemprop="datePublished">2016-09-30</time>
+            </a>
+        </p>
+        <div class="article-entry" itemprop="articleBody"><p>Every so often I want to write a tools post and go on about what I use
 and really like. Sometimes I do this, but mostly I resist because there isn't
-much new for me to contribute here, and I'd rather 
-    </p>
-</div>
-</article>
+much new for me to contribute here, and I'd rather blather about my latest
+coding hobby.</p>
+<p>This is a bit different. As a small bit of history, I spent the better part of
+nine years working for a small cross-platform development shop that delivered
+data-binding products. We supported eleven platforms out of the box from AIX
+to VMS and ported to many others. My next position was as part of an R&amp;D team
+at a metrology firm that had end-to-end control of their products, including
+the O/S and languages. Linux has been my go-to O/S for development and
+entertainment both, but the nature of my work means I have to be fairly
+conversant in a variety of systems and platforms, including Visual Studio
+(VSVim is my guilty pleasure, I admit it).</p>
+<p>What I've found is that <a href="http://www.catb.org/esr/writings/cathedral-bazaar/">Cathedral and Bazaar
+types</a>  can be readily
+identified by their tool preferences. There is a kind of philosophy that
+differs between the UNIX and the Microsoft worlds: the former prefers
+decoupling tools and the latter integrating them. (In a recent chat, our
+principle software engineer&mdash;who is probably a bona fide
+genius&mdash;said something to the effect, "What's a toolchain? Windows
+developers don't <em>have</em> toolchains. We click a button.")</p>
+<p>If you're a Cathedral type, you prefer integrated tools: you want your source
+control, ticketing, builds / CI, and quite possibly your microwave controls
+inside of a feature-packed IDE. If you're a Bazaar type, you prefer to have
+one tool for each job so you can pick your favorite and customize your
+ecosystem.</p>
+<p>The fact is, though, that this distinction is blurring quite a bit these days.</p>
+<p>Microsoft <a href="https://blogs.msdn.microsoft.com/powershell/2016/04/01/bash-for-windows-why-its-awesome-and-what-it-means-for-powershell/">ported Bash to
+Windows</a>,
+and that's more than just a nod to random Linux users, I think: it's an
+admission that open source tools like <a href="https://www.docker.com/">Docker</a> are
+too big to ignore in modern Windows development; micro-service (see <a href="https://giantswarm.io/">Giant
+Swarm</a> for an example) infrastructures are more than a
+passing fad. Many of these tools don't have adequate equivalents on
+Windows&mdash;at least, not yet. (Remember the days when C# was just
+warmed-over Java?)</p>
+<p>We've also found a broader acceptance of platform virtualization&mdash;and not
+just the sort that lets you run Ubuntu on your Windows box (or vice versa).
+We're really talking about <em>language platforms</em> like the JVM and CLR.</p>
+<p><a href="http://clojure.org/about/rationale">Clojure's rationale for using the JVM</a>
+(see "Languages and Platforms") is significant. While several languages
+targeted the JVM prior to Clojure (i.a.,
+<a href="https://wiki.python.org/jython/JythonFaq/GeneralInfo">Jython</a>), I'm not sure
+that anyone has made the point so forcefully as Jim Hickey. It's the language
+platform that's the future, and whatever language you're using is a tool for
+the job. The platform is what's deployed and what's ubiquitous, <em>not the
+language</em>.</p>
+<p>In a sense, the JVM is basically a Cathedral. (And yes, the Java langauge
+specifications are open, and so also are implementations. But they weren't
+always!) But notice now how as a platform it enables the Bazaar-like
+development model that undergirds open source by providing a common reference
+implementation (the Java language) while at the same time allowing others to
+compile to the same byte-code and achieve the same interoperability. This
+abstraction enables us to enjoy enterprise software development (Java)
+alongside rapid prototyping (Jython) and functional programming (Clojure).
+(There's also, of course, JRuby, Groovy, Scala, and others.) The CLR serves
+the same purpose for .NET: I do a fair bit of development with IronPython
+these days myself. All you have to ask is one question: given the choice, all
+things being equal, would I rather write Jython and interface with my Java
+libraries or have to write a Boost or SWIG layer over my C++ libraries?</p>
+<p>To bring this full circle to tools, I think we need to return to the
+difference between monolithic integration-based tools and simple, decoupled
+tools and understand that <em>language is one of the tools</em>. Languages excel at
+different tasks, but few of them interoperate very well. But how many times
+have we stared at a monitor only wishing that we could script this task
+instead of compile it, or use pattern matching to compress this repetative
+copy-and-paste monstrosity into something concise and orderly?</p>
+<p>If we have a common language platform (and, it must be said, a suitable
+business case), selecting languages appropriate to the tasks at hand has a
+smaller impact because they all play nicely together. The Cathedral&mdash;the
+language platform&mdash;meets the Bazaar&mdash;the language choice&mdash;very
+nicely.</p></div>
+        <footer class="article-footer">
+            <a data-url="https://methanm.github.io/https://methanm.github.io/Platform-Partisanship/" class="article-share-link">Share</a>
 
 
-        </div>
+            <ul class="article-tag-list">
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/programming">programming</a></li>
+                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/tools">tools</a></li>
+            </ul>
 
-        <div class="article-row">
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/best-practices/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="Best Practices" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2015-11-22</time></p>
+        </footer>
     </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/best-practices/" class="title">Best Practices</a>
-    </h2>
-    <p class="article-excerpt">
-        The team at my new job has grown pretty rapidly as more resources have been
-devoted to pushing things out the door, and as we've done some reorganization.
-Along with this have come some growing pains 
-    </p>
-</div>
 </article>
-
-
-
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/AOP-with-Python/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="AOP with Python" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-01-28</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/AOP-with-Python/" class="title">AOP with Python</a>
-    </h2>
-    <p class="article-excerpt">
-        A lot of my work these days revolves around writing system tests using
-IronPython: our principal SDK is written in C/C++, but we have a thin
-.NET wrapper around it. A separate software group integrate
-    </p>
-</div>
-</article>
-
-
-        </div>
-
-        <div class="article-row">
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/More-on-Racket/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="More on Racket" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/racket">racket</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-09-10</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/More-on-Racket/" class="title">More on Racket</a>
-    </h2>
-    <p class="article-excerpt">
-        Back in the day, when learning a new programming language, I would take a 
-little time and make a random password generator: this is how I learned my
-first bit of C as a pimply junior high school stud
-    </p>
-</div>
-</article>
-
-
-
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/Racket-and-DSLs/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="Racket and DSLs" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-09-02</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/Racket-and-DSLs/" class="title">Racket and DSLs</a>
-    </h2>
-    <p class="article-excerpt">
-        When I was in college, I took a one-credit LISP course taught by 
-Matt Curtin, and I also 
-implemented two Scheme interpreters for my undergraduate (C++) and 
-graduate (Java) programming languages cou
-    </p>
-</div>
-</article>
-
-
-        </div>
-
-        <div class="article-row">
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="O(n) Point Duplicate Detection" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-02</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection/" class="title">O(n) Point Duplicate Detection</a>
-    </h2>
-    <p class="article-excerpt">
-        
-
-So Donald Knuth says that premature optimization is the root of all evil,
-which probably isn't too far off the truth. (Loving money is, I suppose,
-a sort of premature optimization.)
-But an interesti
-    </p>
-</div>
-</article>
-
-
-
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection-Conclusion/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="O(n) Point Duplicate Detection Conclusion" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-04-03</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/O(n)-Point-Duplicate-Detection-Conclusion/" class="title">O(n) Point Duplicate Detection Conclusion</a>
-    </h2>
-    <p class="article-excerpt">
-        The more I think about yesterday's post, the more I feel like it needs some 
-tidying up.
-First, this really isn't suitable for production code, and I 
-realize this. What happens when, for example, a d
-    </p>
-</div>
-</article>
-
-
-        </div>
-
-        <div class="article-row">
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/AOP-and-Python,-part-II/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="AOP and Python, part II" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-01-30</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/AOP-and-Python,-part-II/" class="title">AOP and Python, part II</a>
-    </h2>
-    <p class="article-excerpt">
-        So the last article was written rather hastily during a bout of
-multi-tasking. I'd like to revisit the idea of aspect-oriented programming
-using Python's decorators.
-There are a lot of good introducti
-    </p>
-</div>
-</article>
-
-
-
-
-    
-
-
-
-<article class="article article-summary">
-<div class="article-summary-inner">
-
-        <a href="https://methanm.github.io/Racket-and-Euler-4/" class="thumbnail" style="height: 162.548076923077px;">
-            <span alt="Racket and Euler 4" class="thumbnail-image thumbnail-none"></span>
-        </a>
-
-    <div class="article-meta">
-            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">programming</a></p>
-        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-09-25</time></p>
-    </div>
-    <h2 class="article-title">
-        <a href="https://methanm.github.io/Racket-and-Euler-4/" class="title">Racket and Euler 4</a>
-    </h2>
-    <p class="article-excerpt">
-        Playing around with Racket still in the few hours I have during the weeks.
-Thinking functionally has been a good exercise, but I'm still working through
-the question of when it's appropriate to use se
-    </p>
-</div>
-</article>
-
-
-        </div>
-
 
 
 
