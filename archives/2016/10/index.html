@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="UTF-8" /><title>AOP and Python, part II</title>
+        <meta charset="UTF-8" /><title>Archive: 2016/10</title>
         <meta name="author" content="Ethan">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -72,7 +72,7 @@
                 <div class="main-body-inner">
                     <section id="main">
                         <div class="main-body-header">
-                            <h1 class="header">Article</h1>
+                            <h1 class="header"><i class="icon" id="icon-archive"></i>Archive: 2016/10</h1>
                         </div>
                         <div class="main-body-content">
                             
@@ -80,208 +80,36 @@
 
 
 
+        <div class="article-row">
+
+    
 
 
-<article class="article article-single article-type-article" itemscope="" itemprop="blogarticle">
-    <div class="article-inner">
 
-        <header class="article-header">
-            <h1 class="article-title" itemprop="name">AOP and Python, part II</h1>
-        </header>
+<article class="article article-summary">
+<div class="article-summary-inner">
 
-        <p class="article-byline">
-            <a href="https://methanm.github.io/AOP-and-Python,-part-II/" class="article-date">
-                <time datetime="2016-01-30T09:48:00.000Z" itemprop="datePublished">2016-01-30</time>
-            </a>
-        </p>
-        <div class="article-entry" itemprop="articleBody"><p>So the last article was written rather hastily during a bout of
-multi-tasking. I'd like to revisit the idea of aspect-oriented programming
-using Python's decorators.</p>
-<p>There are a lot of good introductions to decorators, but I think Bruce Eckel's
-two-part series (<a href="http://www.artima.com/weblogs/viewpost.jsp?thread=240808">Part One</a>
-and <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=240845">Part Two</a>) were
-the most useful for me when trying to understand how to create a decorator out
-of a class. And of course there is the <a href="https://en.wikipedia.org/wiki/Aspect-oriented_programming">ubiquitous Wikipedia article</a>
-for those who want a fuller definition of AOP.</p>
-<p>The basic idea behind AOP is that our code is often a stew
-of infrastructure and business logic. The canonical example is logging: every
-developer understands the importance of logging and well-instrumented code, 
-even though we often don't expose it to the user. The most ubiquitous C 
-debugger is, after all, <code>printf</code>.</p>
-<p>What's a bit frustrating, though, is that logging code rarely has anything to
-do with the actual application we're writing, and it's tedious to read code
-that uses it. It's embarrassing to admit it, but there have been plenty of
-times in my career where I'd write code that looked like this:</p>
-<div class="codehilite"><pre><span></span><span class="nt">if</span> <span class="o">(&lt;</span><span class="nt">some</span> <span class="nt">condition</span><span class="o">&gt;)</span> <span class="p">{</span>
-    <span class="n">printf</span> <span class="p">(</span><span class="s2">&quot;Break here: %s, %d\n&quot;</span><span class="o">,</span> <span class="n">__FILE__</span><span class="o">,</span> <span class="n">__LINE__</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+        <a href="https://methanm.github.io/Racket-Reading/" class="thumbnail" style="height: 162.548076923077px;">
+            <span alt="Racket Reading" class="thumbnail-image thumbnail-none"></span>
+        </a>
 
-
-<p>Decorators don't exactly offer us line-by-line control the way that injecting
-<code>printf</code>s into the code does, but they do allow us to shift logic away from
-the business function by writing functions that return functions.</p>
-<p>A classic example in Python is an entry-exit decorator that allows us
-to trace function execution:</p>
-<div class="codehilite"><pre><span></span>def entex (func):
-    def wrapped_func (*args, **kwargs):
-        print (&quot;Entering &quot; + func.__name__)
-        res = func (*args, **kwargs)
-        print (&quot;Exited &quot; + func__name__)
-
-        return res
-
-    return wrapped_func
-</pre></div>
-
-
-<p>(There are a lot of times such a function could be helpful. In my previous 
-work, we spent a lot of time working on syntax trees--at least of a sort--that
-were pretty complicated. Being able to trace snippets after the fact would
-have been pretty helpful, since stepping through a hundred functions was a bit
-of a pain. Post-mortem analysis was usually easier.)</p>
-<p>Now then:</p>
-<div class="codehilite"><pre><span></span>def hello_world (name):
-    print (&quot;Hello, &quot; + name)
-</pre></div>
-
-
-<p>is about the simplest function you can write in Python. Let's instrument the
-entry and exit points:</p>
-<div class="codehilite"><pre><span></span>@ent_ex
-def hello_world (name):
-    print (&quot;Hello, &quot; + name)
-
-&gt;&gt;&gt; hello_world(&quot;Ethan&quot;)
-Entering hello_world
-Hello, Ethan
-Exited hello_world
-</pre></div>
-
-
-<p>The <code>@ent_ex</code> prefix is the Python decorator syntax, which is just a
-bit of sugar for <code>hello_world = entex (hello_world)</code>. It's a boring decorator
-of course, but we can imagine there are other cases that could be more
-interesting. It's a bit unpythonic, but we could imagine imposing strict type
-checking:</p>
-<div class="codehilite"><pre><span></span>@expects(str)
-def hello_world (name):
-    print (&quot;Hello, &quot; + name)
-
-&gt;&gt;&gt; hello_world(1)
-&lt;type &#39;int&#39;&gt; argument should be a &lt;type &#39;str&#39;&gt;
-</pre></div>
-
-
-<p>This can be accomplished with a little wizardry:</p>
-<div class="codehilite"><pre><span></span>def expects (*types):
-    def wrap (func):
-        def wrapped_func (*args, **kwargs):
-            for arg, typ in zip(args, types):
-              if type(arg) is not typ:
-                 print (str(type(arg)) + &quot; argument should be a &quot; + str(typ))
-                 return False
-
-              else:
-                 return func (*args, **kwargs)
-
-        return wrapped_func
-
-     return wrap
-</pre></div>
-
-
-<p>This is a little more complicated than the first example because the decorator 
-function takes arguments. In this case, we need to have an enclosing scope to
-hold the arguments to the decorator prior to wrapping the function passed to
-it.</p>
-<p>Naturally, decorators can be composed:</p>
-<div class="codehilite"><pre><span></span>@entex
-@expects(str)
-def hello_world(name):
-    print (&quot;Hello, &quot; + name)
-</pre></div>
-
-
-<p>This gets a little ugly, which any Pythonista will tell you:</p>
-<div class="codehilite"><pre><span></span>Entering wrapped_func
-Hello, Ethan
-Exited wrapped_func
-</pre></div>
-
-
-<p>What we'd like, of course, is for <code>entex</code> to work on <code>hello_world</code>, but it
-instead applies to the <code>expects</code> function. There is a module, <code>functools</code>,
-that includes a decorator for just this purpose (<code>wraps</code>).
-<a href="https://docs.python.org/2/library/functools.html">Functools</a> is super helpful
-and has a lot of utility (<code>partial</code> is really handy for IronPython event
-handling).  Read the documentation for more, but here is a quick and dirty 
-illustration:</p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
-
-<span class="k">def</span> <span class="nf">entex</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">wrapped_func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Entering &quot;</span> <span class="o">+</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Exited &quot;</span> <span class="o">+</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span>
-
-    <span class="k">return</span> <span class="n">wrapped_func</span>
-
-<span class="k">def</span> <span class="nf">expects</span> <span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">wrap</span> <span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">wrapped_func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">typ</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">typ</span><span class="p">:</span>
-                    <span class="k">print</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; argument should be a &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
-                    <span class="k">return</span> <span class="bp">False</span>
-
-            <span class="n">res</span> <span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="n">res</span>
-        <span class="k">return</span> <span class="n">wrapped_func</span>
-
-    <span class="k">return</span> <span class="n">wrap</span>
-
-<span class="nd">@entex</span>
-<span class="nd">@expects</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">hello_world</span> <span class="p">(</span><span class="s2">&quot;Ethan&quot;</span><span class="p">)</span>
-    <span class="n">hello_world</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">Entering</span> <span class="n">hello_world</span>
-<span class="n">Hello</span><span class="p">,</span> <span class="n">Ethan</span>
-<span class="n">Exited</span> <span class="n">hello_world</span>
-<span class="n">Entering</span> <span class="n">hello_world</span>
-<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;int&#39;</span><span class="o">&gt;</span> <span class="n">argument</span> <span class="n">should</span> <span class="n">be</span> <span class="n">a</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;str&#39;</span><span class="o">&gt;</span>
-<span class="n">Exited</span> <span class="n">hello_world</span>
-</pre></div>
-
-
-<p>As with any conversation about decorators, there's a lot left unsaid here. The
-idea of modifying function behavior is quite powerful: it allows us to extend
-the concept of decoupling components to decoupling functional logic. Code 
-becomes a bit tidier and easier to read, which is never a bad thing, and it
-also frees developers to think more concisely about The Problem At Hand
-without being distracted by infrastructural concerns from the outset.</p></div>
-        <footer class="article-footer">
-            <a data-url="https://methanm.github.io/https://methanm.github.io/AOP-and-Python,-part-II/" class="article-share-link">Share</a>
-
-
-            <ul class="article-tag-list">
-                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/python">python</a></li>
-                <li class="article-tag-list-item"><a class="article-tag-list-link" href="https://methanm.github.io/tags/aspect-oriented_programming">aspect-oriented programming</a></li>
-            </ul>
-
-        </footer>
+    <div class="article-meta">
+            <p class="category"><a class="article-category-link" href="https://methanm.github.io/categories/programming">Programming</a></p>
+        <p class="date"><time datetime="2015-03-03T00:13:55.108Z" itemprop="datePublished">2016-10-08</time></p>
     </div>
+    <h2 class="article-title">
+        <a href="https://methanm.github.io/Racket-Reading/" class="title">Racket Reading</a>
+    </h2>
+    <p class="article-excerpt">
+        A bit of Racket potpourri lately as I am reading through some material as well
+as working on Euler problems; more on the latter after this.
+One of the reasons I became interested in Racket was its app
+    </p>
+</div>
 </article>
 
+
+        </div>
 
 
                         </div>
